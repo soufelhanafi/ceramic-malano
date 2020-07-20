@@ -1,5 +1,7 @@
 package ma.ceramic.milano.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -7,6 +9,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -52,11 +55,11 @@ public class ClientServiceImpl implements IClientService {
 	}
 
 	@Override
-	public Page<Client> getAllClients() {
-		Sort sort1 = Sort.by("id");
+	public Page<Client> getAllClients(int pageNo, int pageSize, String sortBy) {
 
-		PageRequest pageRequest = PageRequest.of(0, 10, sort1);
-		return null;
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+		Page<Client> pagedResult = clientRepository.findAll(paging);
+		return pagedResult;
 	}
 
 	@Override
