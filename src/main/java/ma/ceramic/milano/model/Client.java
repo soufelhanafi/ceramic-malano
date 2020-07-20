@@ -29,6 +29,29 @@ public class Client extends AbstractBaseModel {
 	@Column
 	@Email
 	private String email;
+	
+	@Column
+	private double totalSpent;
+	
+	@Column
+	private double totalToPay;
+	
+
+	public double getTotalSpent() {
+		return totalSpent;
+	}
+
+	public void setTotalSpent(double totalSpent) {
+		this.totalSpent = totalSpent;
+	}
+
+	public double getTotalToPay() {
+		return totalToPay;
+	}
+
+	public void setTotalToPay(double totalToPay) {
+		this.totalToPay = totalToPay;
+	}
 
 	public String getName() {
 		return Name;

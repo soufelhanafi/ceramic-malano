@@ -18,6 +18,17 @@ public class Category extends AbstractBaseModel {
 	@Column
 	private String description;
 	
+	@Column
+	private double totalSelled;
+	
+	
+	public double getTotalSelled() {
+		return totalSelled;
+	}
+
+	public void setTotalSelled(double totalSelled) {
+		this.totalSelled = totalSelled;
+	}
 
 	public String getDescription() {
 		return description;

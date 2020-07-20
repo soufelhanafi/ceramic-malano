@@ -30,6 +30,28 @@ public class Product  extends AbstractBaseModel {
 	
 	@Column
 	private String description;
+	
+	@Column
+	private double totalSelled;
+	
+	@Column
+	private double totalUnitySelled;	
+
+	public double getTotalSelled() {
+		return totalSelled;
+	}
+
+	public void setTotalSelled(double totalSelled) {
+		this.totalSelled = totalSelled;
+	}
+
+	public double getTotalUnitySelled() {
+		return totalUnitySelled;
+	}
+
+	public void setTotalUnitySelled(double totalUnitySelled) {
+		this.totalUnitySelled = totalUnitySelled;
+	}
 
 	public String getName() {
 		return Name;
