@@ -49,6 +49,19 @@ public class Purchase extends AbstractBaseModel {
 	
 	@Column
 	private String cine;
+	
+	@Column
+	private String description;
+	
+	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public long getProductId() {
 		return productId;

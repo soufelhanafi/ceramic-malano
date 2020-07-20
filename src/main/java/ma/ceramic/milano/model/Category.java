@@ -14,6 +14,18 @@ public class Category extends AbstractBaseModel {
 	
 	@Column 
 	private String Name;
+	
+	@Column
+	private String description;
+	
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public String getName() {
 		return Name;

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "prodcut")
+@Table(name = "product")
 public class Product  extends AbstractBaseModel {
 
 	/**
@@ -26,7 +26,10 @@ public class Product  extends AbstractBaseModel {
 	private String mark;
 	
 	@Column 
-	private String cat_id;
+	private long catId;
+	
+	@Column
+	private String description;
 
 	public String getName() {
 		return Name;
@@ -60,13 +63,22 @@ public class Product  extends AbstractBaseModel {
 		this.mark = mark;
 	}
 
-	public String getCat_id() {
-		return cat_id;
+	public long getCatId() {
+		return catId;
 	}
 
-	public void setCat_id(String cat_id) {
-		this.cat_id = cat_id;
+	public String getDescription() {
+		return description;
 	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setCatId(long catId) {
+		this.catId = catId;
+	}
+	
 	
 	
 }
