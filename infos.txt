@@ -1,0 +1,8 @@
+# Se connecter à la base de données H2:
+http://localhost:8080/api/public/h2_console
+Et ne rien changer dans ce qui est pre-rempli
+
+# Travailer avec Postgres en Docker. Trop long on le fera après
+docker volume create postgres-data  
+
+docker run --name local-postgres10.3 -p 5432:5432 -e POSTGRES_PASSWORD=xpass -e POSTGRES_USER=xuser -e POSTGRES_DB=testplus  --mount source=postgres-data,destination=/var/lib/postgresql/data postgres:10.3-alpine
