@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.SafeHtml;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
  * Pour une personne ou une entreprise.
@@ -30,7 +31,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Entity
 @Table(name = "account")
-@JsonIgnoreProperties(value = {"password"})
 public class CeramicMilanoUser extends AbstractBaseModel {
 
 	/**
@@ -66,6 +66,7 @@ public class CeramicMilanoUser extends AbstractBaseModel {
 	@Column
 	@NotBlank(message = "Password could not be empty")
 	@Size(max = 100, message = "password should have atmost 100 characters")
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 
 
