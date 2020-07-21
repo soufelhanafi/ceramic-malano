@@ -15,36 +15,28 @@ public class Purchase extends AbstractBaseModel {
 	private static final long serialVersionUID = 4055265740422349219L;
 
 	@Column
-	@NotBlank(message = "productId could not be empty")
 	private long productId;
 	
-	
 	@Column
-	@NotBlank(message = "productName could not be empty")
 	private String productName;
 	
+	@Column
+	private double totalPaid;
+	
 	
 	@Column
-	@NotBlank(message = "totalPaid could not be empty")
-	private float totalPaid;
+	private double unitPrice;
 	
 	@Column
-	@NotBlank(message = "totalToPay could not be empty")
-	private float totalToPay;
-	
-	@Column
-	@NotBlank(message = "numberOfUnity could not be empty")
 	private long numberOfUnity;
 	
 	@Column
 	private float restToPay;
 	
 	@Column
-	@NotBlank(message = "clientName could not be empty")
 	private String clientName;
 	
 	@Column
-	@NotBlank(message = "clientId could not be empty")
 	private long clientId;
 	
 	@Column
@@ -79,20 +71,12 @@ public class Purchase extends AbstractBaseModel {
 		this.productName = productName;
 	}
 
-	public float getTotalPaid() {
+	public double getTotalPaid() {
 		return totalPaid;
 	}
 
-	public void setTotalPaid(float totalPaid) {
+	public void setTotalPaid(double totalPaid) {
 		this.totalPaid = totalPaid;
-	}
-
-	public float getTotalToPay() {
-		return totalToPay;
-	}
-
-	public void setTotalToPay(float totalToPay) {
-		this.totalToPay = totalToPay;
 	}
 
 	public long getNumberOfUnity() {
