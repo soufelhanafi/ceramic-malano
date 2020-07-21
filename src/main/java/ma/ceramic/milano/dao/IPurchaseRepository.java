@@ -1,9 +1,9 @@
 package ma.ceramic.milano.dao;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import ma.ceramic.milano.model.Purchase;
 
-public interface IPurchaseRepository extends CrudRepository<Purchase, Long> {
+public interface IPurchaseRepository extends PagingAndSortingRepository<Purchase, Long> {
 
 }
