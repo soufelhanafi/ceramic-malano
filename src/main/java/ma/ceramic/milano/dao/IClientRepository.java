@@ -10,5 +10,7 @@ public interface IClientRepository extends PagingAndSortingRepository<Client, Lo
 
 	public Client findFirstByCine(String cine);
 	
+	public Page<Client> findByFullNameIgnoreCaseContaining(String search, Pageable pageable);
+	
 //	public Page<Client> getClientsPage(Pageable pageable);
 }

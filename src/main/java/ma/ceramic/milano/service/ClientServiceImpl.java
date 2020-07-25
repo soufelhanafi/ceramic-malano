@@ -55,12 +55,18 @@ public class ClientServiceImpl implements IClientService {
 	}
 
 	@Override
-	public Page<Client> getAllClients(int pageNo, int pageSize, String sortBy, String order) {
+	public Page<Client> getAllClients(int pageNo, int pageSize, String sortBy, String order, String search) {
 		
 		Sort sort = Sort.by("asc".equals(order) ? Sort.Order.asc(sortBy) : Sort.Order.desc(sortBy), Sort.Order.desc("id"));
 
 		Pageable paging = PageRequest.of(pageNo, pageSize, sort);
-		Page<Client> pagedResult = clientRepository.findAll(paging);
+		Page<Client> pagedResult = null;
+		if(!search.equalsIgnoreCase("")) {
+			pagedResult = clientRepository.findByFullNameIgnoreCaseContaining(search,paging);
+		}else {
+			pagedResult = clientRepository.findAll(paging);
+		}
+		
 		return pagedResult;
 	}
 

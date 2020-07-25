@@ -17,6 +17,6 @@ public interface IClientService {
 	
 	public Client getClient(long id) throws Exception;
 
-	Page<Client> getAllClients(int pageNo, int pageSize, String sortBy, String order);
+	Page<Client> getAllClients(int pageNo, int pageSize, String sortBy, String order, String search);
 
 }
