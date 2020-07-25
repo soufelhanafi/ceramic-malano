@@ -76,7 +76,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		// On le met dans la réponse
 		JSONObject object = new JSONObject();
-		object.put("expireDate", expireDate);
+		object.put("expireDate", expireDate.getTime());
 		object.put("x-auth-token", "Bearer " + token);
 
 		String strJsonRes = object.toString();

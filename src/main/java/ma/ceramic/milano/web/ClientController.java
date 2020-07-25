@@ -1,6 +1,5 @@
 package ma.ceramic.milano.web;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,10 +46,12 @@ public class ClientController {
 	
 	@GetMapping("/clients")
 	public Page<Client> getAllClient(
-			@RequestParam(defaultValue = "0") Integer pageNo, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) throws Throwable {
-		return clientService.getAllClients(pageNo, pageSize, sortBy);
+			@RequestParam(defaultValue = "1") Integer page, 
+            @RequestParam(defaultValue = "25") Integer size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "desc") String order) throws Throwable {
+		page = page - 1;
+		return clientService.getAllClients(page, size, sort, order);
 	}
 
 

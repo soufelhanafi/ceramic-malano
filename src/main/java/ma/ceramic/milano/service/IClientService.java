@@ -15,8 +15,8 @@ public interface IClientService {
 	
 	public boolean removeClient(long id) throws Exception;
 	
-	public Page<Client> getAllClients(int pageNo, int pageSize, String sort);
-	
 	public Client getClient(long id) throws Exception;
+
+	Page<Client> getAllClients(int pageNo, int pageSize, String sortBy, String order);
 
 }

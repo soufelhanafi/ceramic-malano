@@ -17,7 +17,7 @@ public class Client extends AbstractBaseModel {
 	
 	@NotBlank(message = "Name could not be empty")
 	@Column
-	private String Name;
+	private String fullName;
 	
 	@Column(unique = true)
 	private String cine;
@@ -37,6 +37,15 @@ public class Client extends AbstractBaseModel {
 	private double totalToPay;
 	
 
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+
 	public double getTotalSpent() {
 		return totalSpent;
 	}
@@ -53,13 +62,6 @@ public class Client extends AbstractBaseModel {
 		this.totalToPay = totalToPay;
 	}
 
-	public String getName() {
-		return Name;
-	}
-
-	public void setName(String name) {
-		Name = name;
-	}
 
 	public String getCine() {
 		return cine;
