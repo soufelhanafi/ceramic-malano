@@ -39,7 +39,7 @@ public class ClientController {
 		return clientService.removeClient(clientId);
 	}
 	
-	@PutMapping("/clients")
+	@PostMapping("/clients/update")
 	public Client updateClient(@RequestBody Client client) throws Throwable {
 		return clientService.updateClient(client);
 	}
