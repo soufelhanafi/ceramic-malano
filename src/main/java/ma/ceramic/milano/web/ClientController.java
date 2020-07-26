@@ -49,8 +49,8 @@ public class ClientController {
 			@RequestParam(defaultValue = "1") Integer page, 
             @RequestParam(defaultValue = "25") Integer size,
             @RequestParam(defaultValue = "id") String sort,
-            @RequestParam(defaultValue = "desc") String order
-            ,@RequestParam(defaultValue = "") String search) throws Throwable {
+            @RequestParam(defaultValue = "desc") String order,
+            @RequestParam(defaultValue = "") String search) throws Throwable {
 		page = page - 1;
 		return clientService.getAllClients(page, size, sort, order, search);
 	}
