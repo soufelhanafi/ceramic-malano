@@ -10,7 +10,7 @@ public interface IPurchaseService {
 	
 	public Purchase getPurchase(long id) throws Exception;
 	
-	public Page<Purchase> getAllPurchase(int pageNo, int pageSize, String sortBy);
+	public Page<Purchase> getAllPurchase(int pageNo, int pageSize, String sortBy, String order, String search);
 	
 	public Purchase updatePurchase(Purchase purchase) throws Exception;
 }

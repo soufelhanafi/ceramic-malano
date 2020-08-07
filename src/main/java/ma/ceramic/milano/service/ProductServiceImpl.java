@@ -28,7 +28,12 @@ public class ProductServiceImpl implements IProductService {
 	private ICategoryRepository categoryRepository;
 
 	@Override
-	public Product addNewProduct(Product product) {
+	public Product addNewProduct(Product product) throws Exception {
+		Category category = categoryRepository.findById(product.getCatId()).get();
+		if(category == null) {
+			throw new Exception("Category does not exsits");
+		}
+		product.setCategoryName(category.getName());
 		return productRepository.save(product);
 	}
 
@@ -58,9 +63,17 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
-	public Page<Product> getListOfProduct(int pageNo, int pageSize, String sortBy) {
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-		return productRepository.findAll(paging);
+	public Page<Product> getListOfProduct(int pageNo, int pageSize, String sortBy, String order, String search) {
+		Sort sort = Sort.by("asc".equals(order) ? Sort.Order.asc(sortBy) : Sort.Order.desc(sortBy), Sort.Order.desc("id"));
+		Pageable paging = PageRequest.of(pageNo, pageSize, sort);
+		Page<Product> products = null;
+		if(!search.equalsIgnoreCase("")) {
+			products = productRepository.findByNameIgnoreCaseContaining(search, paging);
+		}else {
+			products = productRepository.findAll(paging);
+		}
+		
+		return products;
 	}
 
 	@Override

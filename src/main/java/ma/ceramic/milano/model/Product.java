@@ -14,7 +14,7 @@ public class Product  extends AbstractBaseModel {
 	private static final long serialVersionUID = 1382840350292191328L;
 
 	@Column
-	private String Name;
+	private String name;
 	
 	@Column
 	private float unitPrice;
@@ -35,7 +35,20 @@ public class Product  extends AbstractBaseModel {
 	private double totalSelled;
 	
 	@Column
-	private double totalUnitySelled;	
+	private double totalUnitySelled;
+	
+	@Column
+	private String categoryName;
+	
+	
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
 
 	public double getTotalSelled() {
 		return totalSelled;
@@ -54,11 +67,11 @@ public class Product  extends AbstractBaseModel {
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	public float getUnitPrice() {

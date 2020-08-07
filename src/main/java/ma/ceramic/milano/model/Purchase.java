@@ -18,11 +18,16 @@ public class Purchase extends AbstractBaseModel {
 	private long productId;
 	
 	@Column
+	private String reference;
+	
+	@Column
 	private String productName;
 	
 	@Column
 	private double totalPaid;
 	
+	@Column
+	private double totalPrice;
 	
 	@Column
 	private double unitPrice;
@@ -31,7 +36,7 @@ public class Purchase extends AbstractBaseModel {
 	private long numberOfUnity;
 	
 	@Column
-	private float restToPay;
+	private double restToPay;
 	
 	@Column
 	private String clientName;
@@ -45,7 +50,22 @@ public class Purchase extends AbstractBaseModel {
 	@Column
 	private String description;
 	
-	
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 
 	public String getDescription() {
 		return description;
@@ -87,12 +107,12 @@ public class Purchase extends AbstractBaseModel {
 		this.numberOfUnity = numberOfUnity;
 	}
 
-	public float getRestToPay() {
+	public double getRestToPay() {
 		return restToPay;
 	}
 
-	public void setRestToPay(float restToPay) {
-		this.restToPay = restToPay;
+	public void setRestToPay(double d) {
+		this.restToPay = d;
 	}
 
 	public String getClientName() {

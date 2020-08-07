@@ -24,7 +24,7 @@ public class ProductController {
 	
 	
 	@PostMapping("/products")
-	public Product addNewProduct(@RequestBody Product product) {
+	public Product addNewProduct(@RequestBody Product product) throws Exception {
 		return productService.addNewProduct(product);
 	}
 	
@@ -34,11 +34,14 @@ public class ProductController {
 	}
 	
 	@GetMapping("/products")
-	public Page<Product> getAllProducts(@RequestParam(defaultValue = "0") Integer pageNo, 
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
-		
-		return productService.getListOfProduct(pageNo, pageSize, sortBy);
+	public Page<Product> getAllProducts(
+			@RequestParam(defaultValue = "1") Integer page, 
+            @RequestParam(defaultValue = "25") Integer size,
+            @RequestParam(defaultValue = "id") String sort,
+            @RequestParam(defaultValue = "desc") String order,
+            @RequestParam(defaultValue = "") String search){
+		page = page - 1;
+		return productService.getListOfProduct(page, size, sort, order, search);
 		
 	}
 	

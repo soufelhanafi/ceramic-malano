@@ -41,11 +41,11 @@ public class PurchaseServiceImpl implements IPurchaseService {
 		// get the product
 		Product product = productRepository.findById(purchase.getProductId()).get();
 		if(product == null) {
-			throw new Exception("product does not exsits");
+			throw new Exception("Le produit n'existe pas");
 		}
 		
 		if(purchase.getNumberOfUnity() > product.getQuantity()) {
-			throw new Exception("stock out of range");
+			throw new Exception("stock hors gamme");
 		}
 		
 		double productTotalSelled = product.getTotalSelled();
@@ -53,14 +53,20 @@ public class PurchaseServiceImpl implements IPurchaseService {
 		product.setTotalSelled(productTotalSelled);
 		product.setTotalUnitySelled(product.getTotalUnitySelled() + purchase.getNumberOfUnity());
 		product.setQuantity(product.getQuantity() - purchase.getNumberOfUnity());
+		purchase.setProductName(product.getName());
 		productRepository.save(product);
 		
 		Client client = clientRepository.findById(purchase.getClientId()).get();
 		if(client == null) {
-			throw new Exception("product does not exsits");
+			throw new Exception("Le client n'existe pas");
 		}
+		
+		// get rest to pay of this purchase:
+		purchase.setRestToPay(product.getUnitPrice() * purchase.getNumberOfUnity() - purchase.getTotalPaid());
+		
 		client.setTotalToPay(client.getTotalToPay() + purchase.getRestToPay());
 		client.setTotalSpent(client.getTotalSpent() + purchase.getTotalPaid());
+		purchase.setClientName(client.getFullName());
 		
 		Category category = categoryRepository.findById(product.getCatId()).get();
 		if(category == null) {
@@ -71,6 +77,8 @@ public class PurchaseServiceImpl implements IPurchaseService {
 		categoryRepository.save(category);
 		
 		clientRepository.save(client);
+		
+		
 		
 		Purchase save = purchaseRepository.save(purchase);
 		return save;
@@ -86,10 +94,15 @@ public class PurchaseServiceImpl implements IPurchaseService {
 	}
 
 	@Override
-	public Page<Purchase> getAllPurchase(int pageNo, int pageSize, String sortBy) {
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-		Page<Purchase> findAll = purchaseRepository.findAll(paging);
-		return findAll;
+	public Page<Purchase> getAllPurchase(int pageNo, int pageSize, String sortBy, String order, String search) {
+		Sort sort = Sort.by("asc".equals(order) ? Sort.Order.asc(sortBy) : Sort.Order.desc(sortBy), Sort.Order.desc("id"));
+		Pageable paging = PageRequest.of(pageNo, pageSize, sort);
+		if(search.equalsIgnoreCase("")) {
+			return purchaseRepository.findAll(paging);
+		} else {
+			return purchaseRepository.findByClientNameIgnoreCaseContaining(search, paging);
+		}
+		
 	}
 
 	@Override
