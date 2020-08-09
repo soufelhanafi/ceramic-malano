@@ -40,9 +40,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		// On désactive le CSRF protection, TODO à étudier
 				and().csrf().disable().
 				// On autorise ces URLs
-				authorizeRequests().antMatchers("/**").permitAll()
+				authorizeRequests().antMatchers("/","/static/**","/favicon.ico","/manifest.json","/api/public/**").permitAll()
 				// On doit être authentifié pour toute autre request
-				.antMatchers("/api/private").authenticated().and().
+				.anyRequest().authenticated().and().
 				// On met notre filtre d'authentification
 				addFilter(authFilter)
 				// On met notre filtre d'authorisation

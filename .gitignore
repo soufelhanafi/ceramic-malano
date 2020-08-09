@@ -6,9 +6,11 @@
 ########################
 # Node
 ######################
-/node/**
-/node_modules/**
+/frontend/node/**
+/frontend/node_modules/**
 /bower_components/**
+/build
+/frontend/build
 #/src/main/resources/static/bower_components/**
 
 ######################
