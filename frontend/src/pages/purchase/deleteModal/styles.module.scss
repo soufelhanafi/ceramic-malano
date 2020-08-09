@@ -1,0 +1,22 @@
+.footer {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  order: 2;
+  margin-top: 20px;
+  div {
+    flex-basis: 48%;
+  }
+  button {
+    width: 100%;
+    &:first-child {
+      @media screen and (max-width: 380px) {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  @media screen and (max-width: 380px) {
+    flex-direction: column;
+  }
+}

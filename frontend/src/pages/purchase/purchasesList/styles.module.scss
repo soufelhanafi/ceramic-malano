@@ -1,0 +1,13 @@
+.actionsContainer{
+  &_edit{
+    margin-right: 10px;
+    color: rgb(31, 36, 220);
+    font-size: 16px;
+    cursor: pointer;
+  }
+  &_delete{
+    color: rgb(220, 31, 39);
+    font-size: 16px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,15 @@
+.mainLayout {
+  min-height: 100vh;
+  overflow: auto;
+
+  .header{
+    padding: 0;
+    display: flex;
+    .logo {
+      img {
+        height: 50px;
+        border-radius: 50%
+      }
+    }
+  }
+}

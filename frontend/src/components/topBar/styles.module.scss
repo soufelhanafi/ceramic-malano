@@ -1,0 +1,40 @@
+.main_top_bar {
+  height: 64px !important;
+  .logo_container {
+    min-width: 100px;
+    img {
+      width: 50px;
+      border-radius: 50%
+    }
+  }
+  .menu_items_container{
+    display: flex;
+    .menu_item_container{
+      height: 64px;
+      width: 164px;
+      padding-top: 7px;
+      .menu_item{
+        text-align: center;
+        margin-top: 14px;
+        font-family: Montserrat;
+        font-size: 18px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.22;
+        letter-spacing: normal;
+        text-align: left;
+        color: #ffffff;
+        margin-bottom: 0px;
+        text-align: center;
+      }
+      &_selected{
+        background-color: #00284d;
+      }
+      &_last{
+        width: 250px;
+      }
+
+    }
+  }
+}

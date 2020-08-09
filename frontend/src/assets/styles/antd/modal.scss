@@ -1,0 +1,86 @@
+@import "../mixins.scss";
+
+.ant-modal {
+  padding: 0;
+
+  &-title {
+    font-weight: 600;
+    text-align: center;
+    color: $text-darken;
+    text-transform: uppercase;
+    margin-top: 10px;
+  }
+
+  .ant-alert:not(.alert-normal) {
+    position: relative;
+    border-radius: 0;
+
+    &:after,
+    &:before {
+      content: '';
+      position: absolute;
+      height: 100%;
+      width: 40px;
+      background-color: $pale-gray;
+      top: 0;
+    }
+
+    &:before {
+      left: -40px;
+    }
+
+    &:after {
+      right: -40px;
+    }
+  }
+}
+
+.ant-modal-close {
+  outline: none !important;
+  position: fixed;
+
+  &-x {
+    font-size: 21px;
+    color: $black;
+  }
+}
+
+.ant-modal-mask {
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  background-color: rgba($color: $pale-lilac, $alpha: 0.3);
+}
+
+.ant-modal-footer {
+  display: flex;
+  justify-content: center;
+  border-top: none;
+
+  button {
+    @media screen and (max-width: 320px) {
+      min-width: inherit !important;
+    }
+  }
+}
+
+.ant-modal-content {
+  overflow: auto;
+}
+
+.ant-modal-body {
+  padding: 24px 40px;
+  overflow-y: scroll;
+
+  @media screen and (max-width: 560px) {
+    padding: 30px 5px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  // height: calc(100% - 63px);
+}
+
+.ant-modal-header {
+  border-bottom: 0;
+  padding-bottom: 0;
+}

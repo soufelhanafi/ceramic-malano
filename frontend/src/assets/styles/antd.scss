@@ -1,0 +1,52 @@
+// Import mixins
+@import './mixins.scss';
+@import "./antd/modal.scss";
+@import "./antd/button.scss";
+@import "./custom/index.scss";
+@import "./antd/select.scss";
+
+/////////////////////////////////////////////////////////////////////////////////////////
+/*  ANT DESIGN INPUT */
+
+.ant-input-disabled {
+  background: $gray-lighten-more-more;
+}
+
+.ant-input,
+.ant-select,
+.ant-input-number {
+  height: 50px !important;
+  width: 100%;
+}
+
+.ant-form label:not(.ant-radio-wrapper) {
+  font-weight: 600;
+  color: $text-darken;
+}
+
+.ant-input:placeholder-shown {
+  //text-transform: uppercase;
+  color: $black;
+}
+
+textarea.ant-input {
+  min-height: 100px;
+}
+
+.ant-radio-wrapper {
+  @media screen and (max-width: 800px) {
+    white-space: inherit;
+  }
+}
+
+.ant-spin-nested-loading{
+  width: 100%;
+}
+
+.main-layout-header{
+  color: red !important;
+  .ant-menu-item-selected{
+    color: #fff;
+    background-color: rgba(0,0,0,0);
+  }
+}
