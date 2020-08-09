@@ -34,9 +34,7 @@ class AppRouter extends React.Component {
     }
     return (
       <HashRouter>
-        <Switch>
           {authorized?<PrivateRouter />:<PublicRouter />}
-        </Switch>
       </HashRouter>
     )
   }

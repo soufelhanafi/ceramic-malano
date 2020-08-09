@@ -16,7 +16,6 @@ const { Header, Content, Footer } = Layout;
 const PRouter = ()=>{
   return (
       <>
-
         <Route exact={true} path="/clients" component={ClientsPage} />
         <Route exact={true} path="/products" component={ProductsPage} />
         <Route exact={true} path="/purchases" component={PurchasesPage} />

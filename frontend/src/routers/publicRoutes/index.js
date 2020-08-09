@@ -6,12 +6,10 @@ import LoginForm from "../../pages/login"
 class PubliRouter extends React.Component {
   render() {
     return (
-      <Router>
         <>
           <Route exact={true} path="/login" component={LoginForm} />
           <Route render={() => <Redirect to="/login" />} />
         </>
-      </Router>
     );
   }
 }
