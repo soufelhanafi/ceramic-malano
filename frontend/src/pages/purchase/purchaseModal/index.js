@@ -1,15 +1,12 @@
 import React from "react"
-import { Modal, Form, Icon, Input, Button, Spin, Alert, Select, Row, Col, InputNumber } from 'antd';
+import { Modal} from 'antd';
 import { connect } from "react-redux"
 import purchaseActions from "../../../redux/purchase/actions"
 import clientsActions from "../../../redux/clients/actions"
 import productActions from "../../../redux/products/actions"
-import { IdcardOutlined, PhoneOutlined } from '@ant-design/icons';
-import styles from "./styles.module.scss"
+import PurchaseModalForm from "./purchaseForm"
 
-const { Option } = Select;
-
-class ClientModal extends React.Component {
+class PurchaseModal extends React.Component {
   state = {
     client:{}
   }
@@ -118,12 +115,7 @@ class ClientModal extends React.Component {
   }
 
   render(){
-    const { getFieldDecorator } = this.props.form;
-    const {loading, showErrorMessage, message, showAddModal} = this.props.purchases
-    const { clients } = this.props.clients
-    const { products } = this.props.products
-    const options = clients.map((d,index) => <Option key={index} value={d.id}>{d.fullName}</Option>);
-    const optionsP = products.map((d,index) => <Option key={index} value={d.id}>{d.name}</Option>);
+    const {showAddModal} = this.props.purchases
     return (
       <Modal
         title="Ajout un achat"
@@ -134,149 +126,7 @@ class ClientModal extends React.Component {
         footer={null}
         destroyOnClose={true}
       >
-        <Spin spinning={loading} tip="Loading...">
-        {showErrorMessage&&<Alert message={message} type="error" banner />}
-          <Form onSubmit={this.handleSubmit} className="login-form">
-            <Form.Item label="Référence">
-              {getFieldDecorator('reference', {
-                rules: [{ required: true, message: 'Référence Obligatoire!' }],
-              })(
-                <Input />,
-              )}
-            </Form.Item>
-            <Row type="flex" justify="space-between" >
-              <Col span={11}>
-                <Form.Item label="Client">
-                  {getFieldDecorator(
-                    'client',
-                    {rules:[
-                      { required: true, message: "Client obligatoire" },
-                    ]},
-                  )(
-                    <Select
-                      showSearch
-                      defaultActiveFirstOption={false}
-                      showArrow={false}
-                      filterOption={false}
-                      onSearch={this.handleSearch}
-                      onSelect={this.onSelect}
-                      notFoundContent={null}
-                    >
-                      {options}
-                    </Select>,
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={11}>
-                <Form.Item label="CINE">
-                  {getFieldDecorator('cine', {
-                    rules: [{ required: true, message: 'CINE Obligatoire!' }],
-                  })(
-                    <Input
-                      disabled
-                      prefix={<IdcardOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-                    />,
-                  )}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row type="flex" justify="space-between" >
-              <Col span={11}>
-                <Form.Item label="Produit">
-                  {getFieldDecorator(
-                    'product',
-                    {rules:[
-                      { required: true, message: "Produit obligatoire" },
-                    ]},
-                  )(
-                    <Select
-                      showSearch
-                      defaultActiveFirstOption={false}
-                      showArrow={false}
-                      filterOption={false}
-                      onSearch={this.handleSearchP}
-                      onSelect={this.onSelectP}
-                      notFoundContent={null}
-                    >
-                      {optionsP}
-                    </Select>,
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={11}>
-                <Form.Item label="Prix d'unité">
-                  {getFieldDecorator('unitPrice', {
-                    rules: [{ required: true, message: 'Prix d\'unité Obligatoire!' }],
-                  })(
-                    <InputNumber onChange={up=>this.changeUnitPrice(up)} />,
-                  )}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row type="flex" justify="space-between" >
-              <Col span={11}>
-                <Form.Item label="Nombre d'unité">
-                  {getFieldDecorator(
-                    'numberOfUnity',
-                    {
-                      initialValue:0,
-                      rules:[
-                      { required: true, message: "Nombre d'unité obligatoire" },
-                    ]},
-                  )(
-                    <InputNumber onChange={e=>this.calculePurchase(e)} min={0} />,
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={11}>
-                <Form.Item label="Prix Total">
-                  {getFieldDecorator('totalPrice', {
-                    initialValue:0,
-                    rules: [{ required: true, message: 'Prix d\'unité Obligatoire!' }],
-                  })(
-                    <InputNumber disabled />,
-                  )}
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row type="flex" justify="space-between" >
-              <Col span={11}>
-                <Form.Item label="Montant payé">
-                  {getFieldDecorator(
-                    'totalPaid',
-                    {
-                      initialValue:0,
-                      rules:[
-                      { required: true, message: "Montant payé obligatoire" },
-                    ]},
-                  )(
-                    <InputNumber min={0} onChange={am=>this.calculRemainingAmout(am)}  />,
-                  )}
-                </Form.Item>
-              </Col>
-              <Col span={11}>
-                <Form.Item label="Montant Restant">
-                  {getFieldDecorator('remainingAmount', {
-                    initialValue:0,
-                  })(
-                    <InputNumber min={0} />,
-                  )}
-                </Form.Item>
-              </Col>
-            </Row>
-
-            <div className={styles.footer}>
-              <div>
-                <Button type="primary" htmlType="submit">
-                  Valider
-                </Button>
-              </div>
-              <div>
-                <Button onClick={this.handleCancel}>Annuler</Button>
-              </div>
-            </div>
-          </Form>
-        </Spin>
+        <PurchaseModalForm />
       </Modal>
     )
   }
@@ -286,6 +136,4 @@ const mapStateToProps = state=>{
   return state
 }
 
-const WrappedClientModalForm = Form.create({ name: 'add_client_modal' })(ClientModal);
-
-export default connect(mapStateToProps)(WrappedClientModalForm)
+export default connect(mapStateToProps)(PurchaseModal)
