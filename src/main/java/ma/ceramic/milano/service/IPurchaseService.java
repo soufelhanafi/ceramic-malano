@@ -1,5 +1,8 @@
 package ma.ceramic.milano.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+
 import org.springframework.data.domain.Page;
 
 import ma.ceramic.milano.model.Purchase;
@@ -13,4 +16,6 @@ public interface IPurchaseService {
 	public Page<Purchase> getAllPurchase(int pageNo, int pageSize, String sortBy, String order, String search);
 	
 	public Purchase updatePurchase(Purchase purchase) throws Exception;
+
+	ByteArrayInputStream customerPDFReport() throws Exception;
 }

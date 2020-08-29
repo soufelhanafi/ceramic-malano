@@ -1,9 +1,15 @@
 package ma.ceramic.milano.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
 
 @Entity
 @Table(name = "purchase")
@@ -13,30 +19,18 @@ public class Purchase extends AbstractBaseModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 4055265740422349219L;
-
-	@Column
-	private long productId;
 	
 	@Column
 	private String reference;
 	
 	@Column
-	private String productName;
-	
-	@Column
 	private double totalPaid;
 	
 	@Column
-	private double totalPrice;
-	
-	@Column
-	private double unitPrice;
-	
-	@Column
-	private long numberOfUnity;
-	
-	@Column
 	private double restToPay;
+	
+	@Column
+	private double totalToPay;
 	
 	@Column
 	private String clientName;
@@ -50,6 +44,24 @@ public class Purchase extends AbstractBaseModel {
 	@Column
 	private String description;
 	
+	@OneToMany(cascade=CascadeType.ALL)
+    private Set<PurchaseItem> purchaseItems = new HashSet<>();
+	
+	public double getTotalToPay() {
+		return totalToPay;
+	}
+
+	public void setTotalToPay(double totalToPay) {
+		this.totalToPay = totalToPay;
+	}
+
+	public Set<PurchaseItem> getPurchaseItems() {
+		return purchaseItems;
+	}
+
+	public void setPurchaseItems(Set<PurchaseItem> purchaseItems) {
+		this.purchaseItems = purchaseItems;
+	}
 
 	public String getReference() {
 		return reference;
@@ -57,14 +69,6 @@ public class Purchase extends AbstractBaseModel {
 
 	public void setReference(String reference) {
 		this.reference = reference;
-	}
-
-	public double getTotalPrice() {
-		return totalPrice;
-	}
-
-	public void setTotalPrice(double totalPrice) {
-		this.totalPrice = totalPrice;
 	}
 
 	public String getDescription() {
@@ -75,36 +79,12 @@ public class Purchase extends AbstractBaseModel {
 		this.description = description;
 	}
 
-	public long getProductId() {
-		return productId;
-	}
-
-	public void setProductId(long productId) {
-		this.productId = productId;
-	}
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
 	public double getTotalPaid() {
 		return totalPaid;
 	}
 
 	public void setTotalPaid(double totalPaid) {
 		this.totalPaid = totalPaid;
-	}
-
-	public long getNumberOfUnity() {
-		return numberOfUnity;
-	}
-
-	public void setNumberOfUnity(long numberOfUnity) {
-		this.numberOfUnity = numberOfUnity;
 	}
 
 	public double getRestToPay() {
