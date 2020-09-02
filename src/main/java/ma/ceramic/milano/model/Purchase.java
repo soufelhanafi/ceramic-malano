@@ -1,6 +1,7 @@
 package ma.ceramic.milano.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -45,7 +46,7 @@ public class Purchase extends AbstractBaseModel {
 	private String description;
 	
 	@OneToMany(cascade=CascadeType.ALL)
-    private Set<PurchaseItem> purchaseItems = new HashSet<>();
+    private List<PurchaseItem> purchaseItems;
 	
 	public double getTotalToPay() {
 		return totalToPay;
@@ -55,11 +56,11 @@ public class Purchase extends AbstractBaseModel {
 		this.totalToPay = totalToPay;
 	}
 
-	public Set<PurchaseItem> getPurchaseItems() {
+	public List<PurchaseItem> getPurchaseItems() {
 		return purchaseItems;
 	}
 
-	public void setPurchaseItems(Set<PurchaseItem> purchaseItems) {
+	public void setPurchaseItems(List<PurchaseItem> purchaseItems) {
 		this.purchaseItems = purchaseItems;
 	}
 

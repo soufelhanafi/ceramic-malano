@@ -65,6 +65,7 @@ public class PurchaseServiceImpl implements IPurchaseService {
 
 	@Override
 	public Purchase createNewPurchase(Purchase purchase) throws Exception {
+		
 		return purchaseRepository.save(purchase);
 	}
 

@@ -5,10 +5,10 @@ import { Layout} from "antd"
 import Typography from '@material-ui/core/Typography';
 import TopBar from "../../components/topBar"
 
-import PrivateComponent from "../../pages/private"
 import ClientsPage from "../../pages/clients"
 import ProductsPage from "../../pages/products"
 import PurchasesPage from "../../pages/purchase"
+import CreatePurchase from "../../pages/purchase/createPurchase"
 import styles from "./styles.module.scss"
 
 const { Header, Content, Footer } = Layout;
@@ -19,6 +19,7 @@ const PRouter = ()=>{
         <Route exact={true} path="/clients" component={ClientsPage} />
         <Route exact={true} path="/products" component={ProductsPage} />
         <Route exact={true} path="/purchases" component={PurchasesPage} />
+        <Route exact={true} path="/purchases/create-purchase" component={CreatePurchase} />
         <Route render={() => <Redirect to="/clients" />} />
       </>
   )

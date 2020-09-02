@@ -1,6 +1,7 @@
 import React from "react"
 import { connect } from "react-redux"
-import { Row, Col, Button, Input } from "antd"
+import { Row, Col, Input } from "antd"
+import {Link} from "react-router-dom"
 import purchaseActions from "../../../redux/purchase/actions"
 import styles from "./styles.module.scss"
 
@@ -24,22 +25,11 @@ class TopComponent extends React.Component {
     })
   }
 
-  onChange = e =>{
-    const value = e.target.value
-    if(!value){
-      const {size, page, sort, order} = this.props
-      this.props.dispatch({
-        type: purchaseActions.LOAD_PURCHASES,
-        payload:{size, page, sort, order}
-      })
-    }
-  }
-
   render(){
     return(
         <Row justify="space-between" align="top" className={styles.topComponentContainer}>
           <Col md={12}>
-            <Button onClick={this.showAddModal} type="primary">Ajouter un achat</Button>
+            <Link to={"/purchases/create-purchase"} type="primary">Ajouter un achat</Link>
           </Col>
           <Col md={12}>
             <Search
