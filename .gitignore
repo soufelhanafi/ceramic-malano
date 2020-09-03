@@ -6,11 +6,9 @@
 ########################
 # Node
 ######################
-/frontend/node/**
-/frontend/node_modules/**
+/node/**
+/node_modules/**
 /bower_components/**
-/build
-/frontend/build
 #/src/main/resources/static/bower_components/**
 
 ######################
@@ -138,12 +136,3 @@ SVG
 
 /target/
 
-
-#files:
-<<<<<<< HEAD
-package-lock.json
-yarn.lock
-=======
-/package-lock.json
-/yarn.lock
->>>>>>> 6b1c7f29602bad04701295a5c1292fc7d9c8f3c5
