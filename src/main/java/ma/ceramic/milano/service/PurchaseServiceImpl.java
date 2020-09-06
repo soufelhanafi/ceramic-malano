@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
  
@@ -65,9 +66,36 @@ public class PurchaseServiceImpl implements IPurchaseService {
 
 	@Override
 	public Purchase createNewPurchase(Purchase purchase) throws Exception {
+		long clientId = purchase.getClientId();
+		Optional<Client> clientOpt = clientRepository.findById(clientId);
+		if(clientOpt.isEmpty()) {
+			throw new Exception("Client does not exist");
+		}
+		Client client = clientOpt.get();
+		client.setTotalSpent(client.getTotalSpent() + purchase.getTotalToPay());
+		client.setTotalToPay(client.getTotalToPay() + purchase.getRestToPay());
+		this.clientRepository.save(client);
+		purchase.setClientName(client.getFullName());
+		
+		
+		List<PurchaseItem> purchaseItems = purchase.getPurchaseItems();
+		
+		for(int i = 0; i < purchaseItems.size();i++) {
+			PurchaseItem item = purchaseItems.get(i);
+			Product product = this.productRepository.findById(item.getProductId()).get();
+//			if(product.getQuantity()<item.getNumberOfUnity()) {
+//				throw new Exception("");
+//			}
+			product.setQuantity(product.getQuantity() - item.getNumberOfUnity());
+			product.setTotalSelled(product.getTotalSelled() + item.getTotalPrice());
+			product.setTotalUnitySelled(product.getTotalUnitySelled() + item.getNumberOfUnity());
+			this.productRepository.save(product);
+		}
 		
 		return purchaseRepository.save(purchase);
 	}
+	
+	
 
 	@Override
 	public Purchase getPurchase(long id) throws Exception {

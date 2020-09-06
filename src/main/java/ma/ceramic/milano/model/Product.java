@@ -20,7 +20,7 @@ public class Product  extends AbstractBaseModel {
 	private float unitPrice;
 	
 	@Column
-	private long quantity;
+	private double quantity;
 	
 	@Column
 	private String mark;
@@ -82,11 +82,11 @@ public class Product  extends AbstractBaseModel {
 		this.unitPrice = unitPrice;
 	}
 
-	public long getQuantity() {
+	public double getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(long l) {
+	public void setQuantity(double l) {
 		this.quantity = l;
 	}
 

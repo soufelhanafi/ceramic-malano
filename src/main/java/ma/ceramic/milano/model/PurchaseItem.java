@@ -15,6 +15,9 @@ public class PurchaseItem extends AbstractBaseModel  {
 	
 	
 	@Column
+	private long productId;
+	
+	@Column
 	private String productName;
 	
 	@Column
@@ -26,12 +29,12 @@ public class PurchaseItem extends AbstractBaseModel  {
 	@Column
 	private double numberOfUnity;
 
-	public String getProductName() {
-		return productName;
+	public long getProductId() {
+		return productId;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public String getProductName() {
+		return productName;
 	}
 
 	public double getTotalPrice() {

@@ -35,16 +35,26 @@ class PurchaseModalForm extends React.Component {
     const { form, dispatch } = this.props
     form.validateFields((error, values) => {
       if(!error){
-        const {client, product} = this.state
-        const newPurchase = {
-          productId: product.id,
-          productName: product.name,
-          clientId: client.id,
-          clientName: client.fullName,
+        let purchaseItems  = []
+        const {product,totalProductPrice,numberOfUnity,unitPrice} = values
+        for(let i = 0; i < product.length;i++){
+          if(product[i]){
+            purchaseItems.push({totalPrice:totalProductPrice[i], productId:product[i],numberOfUnity:numberOfUnity[i],unitPrice:unitPrice[i]})
+          }
         }
         dispatch({
           type: purchaseActions.ADD_NEW_PURCHASE,
-          payload: {newPurchase:{...values,...newPurchase}}
+          payload: {
+            newPurchase:{
+              totalToPay:values.totalPrice,
+              restToPay:values.remainingAmount,
+              totalPaid:values.totalPaid,
+              reference:values.reference,
+              clientId:values.client,
+              cine:values.cine,
+              purchaseItems,
+            }
+          }
         })
       }
     })
@@ -85,7 +95,6 @@ class PurchaseModalForm extends React.Component {
   };
 
   onSelectP = (id,key) => {
-    debugger
     const {products} = this.props.products
     for(let i = 0; i<products.length; i++){
       if(products[i].id === id){
@@ -95,27 +104,36 @@ class PurchaseModalForm extends React.Component {
     }
   }
 
-  calculePurchase = num =>{
-    const unitPrice = this.props.form.getFieldValue("unitPrice")
+  calculePurchase = (k,e) =>{
+    const num = parseFloat(e.target.value)
+    const unitPrice = this.props.form.getFieldValue(`unitPrice[${k}]`)
+    let totalPrice = this.props.form.getFieldValue(`totalPrice`)
+    const totalProductPrice = this.props.form.getFieldValue(`totalProductPrice[${k}]`)
     if(unitPrice){
-      const totalPrice = num * unitPrice
-      this.props.form.setFieldsValue({totalPrice,totalPaid:totalPrice,remainingAmount:0})
+      totalPrice += num * unitPrice - totalProductPrice
+      this.props.form.setFieldsValue({totalPrice,totalPaid:totalPrice,remainingAmount:0,[`totalProductPrice[${k}]`]:num * unitPrice})
     }
   }
 
-  changeUnitPrice = up => {
-    const totalPrice = this.props.form.getFieldValue("totalPrice")
-    const numberOfUnity = this.props.form.getFieldValue("numberOfUnity")
-    if(totalPrice>=0 && numberOfUnity>=0){
-      const total = up * numberOfUnity
-      this.props.form.setFieldsValue({totalPrice:total,totalPaid:total,remainingAmount:0})
-    }
-  }
-
-  calculRemainingAmout = amount =>{
+  changeUnitPrice = (k,e) => {
+    const num = parseFloat(e.target.value)
+    let totalPrice = this.props.form.getFieldValue("totalPrice")
+    const numberOfUnity = this.props.form.getFieldValue(`numberOfUnity[${k}]`)
+    const totalProductPrice = this.props.form.getFieldValue(`totalProductPrice[${k}]`)
     debugger
-    const remainingAmount = this.props.form.getFieldValue("totalPrice") - amount
-    this.props.form.setFieldsValue({remainingAmount})
+    if(totalPrice>=0 && numberOfUnity>=0){
+      totalPrice += num * numberOfUnity - totalProductPrice
+      this.props.form.setFieldsValue({totalPrice,totalPaid:totalPrice,remainingAmount:0, [`totalProductPrice[${k}]`]:num * numberOfUnity})
+    }
+  }
+
+  onChangeTotalPrice = (totalPrice)=>{
+    this.props.form.setFieldsValue({totalPrice,totalPaid:totalPrice,remainingAmount:0})
+  }
+
+  onChangePaidAmount = (totalPaid) =>{
+    let totalPrice = this.props.form.getFieldValue("totalPrice")
+    this.props.form.setFieldsValue({totalPaid:totalPaid,remainingAmount:totalPrice-totalPaid})
   }
 
   remove = k => {
@@ -131,6 +149,14 @@ class PurchaseModalForm extends React.Component {
     form.setFieldsValue({
       keys: keys.filter(key => key !== k),
     });
+    const unitPrice = this.props.form.getFieldValue(`unitPrice[${k}]`)
+    let totalPrice = this.props.form.getFieldValue(`totalPrice`)
+    const num = this.props.form.getFieldValue(`numberOfUnity[${k}]`)
+    debugger
+    if(unitPrice){
+      totalPrice -= num * unitPrice
+      this.props.form.setFieldsValue({totalPrice,totalPaid:totalPrice,remainingAmount:0})
+    }
   };
 
   add = () => {
@@ -152,7 +178,7 @@ class PurchaseModalForm extends React.Component {
     const { clients } = this.props.clients
     const { products } = this.props.products
     const options = clients.map((d,index) => <Option key={index} value={d.id}>{d.fullName}</Option>);
-    const optionsP = products.map((d,index) => <Option key={index} value={d.id}>{d.name}</Option>);
+    const optionsP = products.map((d,index) => <Option key={index} value={d.id}>{d.name} ({d.quantity})</Option>);
 
     // made the dynamic Form
     getFieldDecorator('keys', { initialValue: [0] });
@@ -186,7 +212,7 @@ class PurchaseModalForm extends React.Component {
             {getFieldDecorator(`unitPrice[${k}]`, {
               rules: [{ required: true, message: 'Prix d\'unité Obligatoire!' }],
             })(
-              <InputNumber onChange={up=>this.changeUnitPrice(up)} />,
+              <InputNumber onBlur={up=>this.changeUnitPrice(k,up)} />,
             )}
           </Form.Item>
         </Col>
@@ -200,13 +226,13 @@ class PurchaseModalForm extends React.Component {
                 { required: true, message: "Nombre d'unité obligatoire" },
               ]},
             )(
-              <InputNumber onChange={e=>this.calculePurchase(e)} min={0} />,
+              <InputNumber onBlur={e=>this.calculePurchase(k, e)} min={0} />,
             )}
           </Form.Item>
         </Col>
         <Col md={5}>
           <Form.Item label="Somme">
-            {getFieldDecorator(`totalPrice[${k}]`, {
+            {getFieldDecorator(`totalProductPrice[${k}]`, {
               initialValue:0,
               rules: [{ required: true, message: 'Prix d\'unité Obligatoire!' }],
             })(
@@ -293,14 +319,14 @@ class PurchaseModalForm extends React.Component {
               <Col md={5}>
                 <Form.Item label="Somme total">
                   {getFieldDecorator(
-                    'total price',
+                    'totalPrice',
                     {
                       initialValue:0,
                       rules:[
                       { required: true, message: "Montant Total obligatoire" },
                     ]},
                   )(
-                    <InputNumber min={0} onChange={am=>this.calculRemainingAmout(am)}  />,
+                    <InputNumber min={0} onChange={am=>this.onChangeTotalPrice(am)}  />,
                   )}
                 </Form.Item>
               </Col>
@@ -314,7 +340,7 @@ class PurchaseModalForm extends React.Component {
                       { required: true, message: "Montant payé obligatoire" },
                     ]},
                   )(
-                    <InputNumber min={0} onChange={am=>this.calculRemainingAmout(am)}  />,
+                    <InputNumber min={0} onChange={am=>this.onChangePaidAmount(am)}  />,
                   )}
                 </Form.Item>
               </Col>
@@ -323,7 +349,7 @@ class PurchaseModalForm extends React.Component {
                   {getFieldDecorator('remainingAmount', {
                     initialValue:0,
                   })(
-                    <InputNumber min={0} />,
+                    <InputNumber min={0} disabled/>,
                   )}
                 </Form.Item>
               </Col>

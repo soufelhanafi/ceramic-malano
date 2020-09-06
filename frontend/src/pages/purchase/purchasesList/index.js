@@ -13,12 +13,6 @@ class PurchasesList extends React.Component {
     key: 'reference',
     sorter: true
   },
-    {
-    title: 'Produit',
-    dataIndex: 'productName',
-    key: 'productName',
-    sorter: true
-  },
   {
     title: 'Client',
     dataIndex: 'clientName',
@@ -32,8 +26,8 @@ class PurchasesList extends React.Component {
     sorter: true
   },{
     title: 'Montant Total',
-    dataIndex: 'totalPrice',
-    key: 'totalPrice',
+    dataIndex: 'totalToPay',
+    key: 'totalToPay',
     sorter: true,
     render: text=>
         (<span>
@@ -44,16 +38,17 @@ class PurchasesList extends React.Component {
         </span>)
   },
   {
-    title: 'Action',
-    key: 'Action',
-    width: 200,
-    render: (record)=>
-        (
-          <div className={styles.actionsContainer}>
-            <span className={styles.actionsContainer_edit} onClick={(e)=> this.showEditModal(e, record)}>Editer</span>
-            <span className={styles.actionsContainer_delete} onClick={(e)=> this.showDeleteModal(e, record)}>Supprimer</span>
-          </div>
-        )
+    title: 'Reste à payer',
+    dataIndex: 'restToPay',
+    key: 'restToPay',
+    sorter: true,
+    render: text=>
+        (<span>
+          {Number(text).toLocaleString('fr-FR', {
+              minimumFractionDigits: 2,
+            })}
+            dhs
+        </span>)
   },
   ]
 
