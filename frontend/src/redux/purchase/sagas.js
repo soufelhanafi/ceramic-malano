@@ -1,9 +1,11 @@
 import { all, takeEvery, put, call, select } from 'redux-saga/effects'
 import {message} from "antd"
+import { createHashHistory } from 'history'
 import * as purchaseApis from "../../services/purchases"
 import actions from "./actions"
 
 const getPurchasesState = state => state.purchases
+const history = createHashHistory()
 
 export function* LOAD_PURCHASES({payload}){
   const {size, page, sort, order, search} = payload
@@ -40,13 +42,10 @@ export function* ADD_NEW_PURCHASE({payload}){
     const {size, page, sort, order} = yield select(getPurchasesState)
     message.success('Un nouveau purchase a été ajouté avec succés');
     yield put({
-      type: actions.SET_STATE,
-      payload: {loadingInModal:false, showErrorMessage:false, showAddModal: false}
-    })
-    yield put({
       type:actions.LOAD_PURCHASES,
       payload: {size, page, sort, order}
     })
+    yield call(history.push, '/espace-members')
   }else {
     yield put({
       type: actions.SET_STATE,

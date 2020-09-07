@@ -1,17 +1,19 @@
 import React from "react"
-import { Modal, Form, Icon, Input, Button, Spin, Alert, Select, Row, Col, InputNumber } from 'antd';
+import { Form, Icon, Input, Button, Spin, Alert, Select, Row, Col, InputNumber } from 'antd';
 import { connect } from "react-redux"
 import purchaseActions from "../../../../redux/purchase/actions"
 import clientsActions from "../../../../redux/clients/actions"
 import productActions from "../../../../redux/products/actions"
 import { IdcardOutlined} from '@ant-design/icons';
+import {Redirect} from "react-router-dom"
 import styles from "./styles.module.scss"
 
 const { Option } = Select;
 let id = 1;
 class PurchaseModalForm extends React.Component {
   state = {
-    client:{}
+    client:{},
+    redirect: false
   }
 
   componentDidMount(){
@@ -24,10 +26,7 @@ class PurchaseModalForm extends React.Component {
 
   handleCancel = e =>{
     e.preventDefault()
-    this.props.dispatch({
-      type:purchaseActions.SET_STATE,
-      payload: {showAddModal: false}
-    })
+    this.setState({redirect:true})
   }
 
   handleSubmit = e=>{
@@ -251,6 +250,9 @@ class PurchaseModalForm extends React.Component {
         </Col>
       </Row>
     ));
+    if(this.state.redirect){
+      return <Redirect to="/purchases" />
+    }
     return (
         <Spin spinning={loading} tip="Loading...">
         {showErrorMessage&&<Alert message={message} type="error" banner />}

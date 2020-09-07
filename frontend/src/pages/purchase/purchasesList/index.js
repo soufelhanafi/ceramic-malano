@@ -72,7 +72,7 @@ class PurchasesList extends React.Component {
     const order = sorter.order ? sorter.order.includes("asc")?"asc":"desc" : null
     const sort = sorter.column?sorter.field:null
     this.props.dispatch({
-      type: purchaseActions.LOAD_CLIENTS,
+      type: purchaseActions.LOAD_PURCHASES,
       payload:{size:pagination.pageSize, page: pagination.current, sort, order}
     })
   }
