@@ -3,6 +3,8 @@ package ma.ceramic.milano.service;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +15,6 @@ import ma.ceramic.milano.dao.ICategoryRepository;
 import ma.ceramic.milano.dao.IClientRepository;
 import ma.ceramic.milano.dao.IProductRepository;
 import ma.ceramic.milano.dao.IPurchaseRepository;
-import ma.ceramic.milano.model.Category;
 import ma.ceramic.milano.model.Client;
 import ma.ceramic.milano.model.Product;
 import ma.ceramic.milano.model.Purchase;
@@ -21,13 +22,15 @@ import ma.ceramic.milano.model.PurchaseItem;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Stream;
- 
+
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
  
@@ -40,11 +43,11 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 @Service
 @Transactional
@@ -63,6 +66,9 @@ public class PurchaseServiceImpl implements IPurchaseService {
 	
 	@Autowired
 	private ICategoryRepository categoryRepository;
+	
+	@Autowired
+	Configuration freemarkerConfiguration;
 
 	@Override
 	public Purchase createNewPurchase(Purchase purchase) throws Exception {
@@ -158,8 +164,8 @@ public class PurchaseServiceImpl implements IPurchaseService {
 		return save;
 	}
 	
-	@Override
-	public ByteArrayInputStream customerPDFReport() throws Exception {
+	
+	public ByteArrayInputStream customerPDFReport1() throws Exception {
 		Purchase purchase = new Purchase();
 		
 		
@@ -220,6 +226,41 @@ public class PurchaseServiceImpl implements IPurchaseService {
 	        
 	    return new ByteArrayInputStream(out.toByteArray());
 	  }
+
+
+
+	@Override
+	public Resource customerPDFReport() throws Exception {
+		
+		Template template = freemarkerConfiguration.getTemplate("purchase.ftl");
+		
+		 File html = File.createTempFile("purchase", ".html");
+		
+		  logger.info(html.getAbsolutePath());
+		
+		  String pdfPath =
+		      html.getParentFile().getAbsolutePath() + "/" + FilenameUtils.getBaseName(html.getName())
+		          + ".pdf";
+		
+		  Writer w = new FileWriter(html);
+		  
+		  Map<String,String> data = new HashMap<String, String>();
+		  
+		  String st = "Hello report";
+		  data.put("str", st);
+		
+		  template.process(data, w);
+		  
+		  logger.info(html.getAbsolutePath());
+		
+		  new ProcessBuilder()
+		      .command("bash", "-c", "wkhtmltopdf '/var/folders/rp/04qj8khj0pvgkj56cxjc2ty00000gn/T/purchase2940124810411607726.html' "
+		      		+ "'/Users/soufelhanafi/Downloads/newPdf-folder/newPdf.pdf'" ).start().waitFor();
+		
+		  return new FileSystemResource("/Users/soufelhanafi/Downloads/newPdf-folder/newPdf.pdf");
+	    
+//		return null;
+	}
 	
 
 }

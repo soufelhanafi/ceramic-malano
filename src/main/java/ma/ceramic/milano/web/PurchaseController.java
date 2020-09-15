@@ -1,10 +1,8 @@
 package ma.ceramic.milano.web;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -21,7 +19,7 @@ import ma.ceramic.milano.model.Purchase;
 import ma.ceramic.milano.service.IPurchaseService;
 
 @RestController
-@RequestMapping("/api/private")
+@RequestMapping("/api/public")
 public class PurchaseController {
 
 	@Autowired
@@ -49,9 +47,9 @@ public class PurchaseController {
 	
 	@GetMapping(value = "/pdf",
             produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<InputStreamResource> customersReport() throws Exception {
+    public ResponseEntity<Resource> customersReport() throws Exception {
  
-        ByteArrayInputStream bis = purchaseService.customerPDFReport();
+		Resource bis = purchaseService.customerPDFReport();
  
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=customers.pdf");
@@ -60,6 +58,6 @@ public class PurchaseController {
                 .ok()
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)
-                .body(new InputStreamResource(bis));
+                .body(bis);
     }
 }

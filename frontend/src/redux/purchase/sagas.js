@@ -108,11 +108,16 @@ export function* DELETE_PURCHASE({payload}){
   }
 }
 
+export function* DOWNLAOD_PDF(){
+  yield call(purchaseApis.getPurchasePdf)
+}
+
 export default function* rootSaga() {
   yield all([
     takeEvery(actions.LOAD_PURCHASES, LOAD_PURCHASES),
     takeEvery(actions.ADD_NEW_PURCHASE, ADD_NEW_PURCHASE),
     takeEvery(actions.UPDATE_PURCHASE, UPDATE_PURCHASE),
     takeEvery(actions.DELETE_PURCHASE, DELETE_PURCHASE),
+    DOWNLAOD_PDF()
   ])
 }

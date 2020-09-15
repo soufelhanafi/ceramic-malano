@@ -1,8 +1,6 @@
 package ma.ceramic.milano.service;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 
 import ma.ceramic.milano.model.Purchase;
@@ -17,5 +15,5 @@ public interface IPurchaseService {
 	
 	public Purchase updatePurchase(Purchase purchase) throws Exception;
 
-	ByteArrayInputStream customerPDFReport() throws Exception;
+	Resource customerPDFReport() throws Exception;
 }

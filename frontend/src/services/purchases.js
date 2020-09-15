@@ -49,3 +49,16 @@ export function deletePurchase(purchaseToDelete){
     return false
   })
 }
+
+export function getPurchasePdf(purchaseToDelete){
+  return axios({
+    method:"get",
+    url:"/api/public/pdf",
+    responseType: 'arraybuffer'
+  }).then((response)=>{
+    debugger
+    return response.data
+  }).catch(()=>{
+    return false
+  })
+}
