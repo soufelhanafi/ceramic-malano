@@ -19,7 +19,7 @@ import ma.ceramic.milano.model.Purchase;
 import ma.ceramic.milano.service.IPurchaseService;
 
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping("/api/private")
 public class PurchaseController {
 
 	@Autowired

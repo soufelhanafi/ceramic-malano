@@ -24,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
@@ -89,9 +90,6 @@ public class PurchaseServiceImpl implements IPurchaseService {
 		for(int i = 0; i < purchaseItems.size();i++) {
 			PurchaseItem item = purchaseItems.get(i);
 			Product product = this.productRepository.findById(item.getProductId()).get();
-//			if(product.getQuantity()<item.getNumberOfUnity()) {
-//				throw new Exception("");
-//			}
 			product.setQuantity(product.getQuantity() - item.getNumberOfUnity());
 			product.setTotalSelled(product.getTotalSelled() + item.getTotalPrice());
 			product.setTotalUnitySelled(product.getTotalUnitySelled() + item.getNumberOfUnity());
@@ -119,7 +117,7 @@ public class PurchaseServiceImpl implements IPurchaseService {
 		if(search.equalsIgnoreCase("")) {
 			return purchaseRepository.findAll(paging);
 		} else {
-			return purchaseRepository.findByClientNameIgnoreCaseContaining(search, paging);
+			return purchaseRepository.findByClientNameOrReferenceIgnoreCaseContaining(search, paging);
 		}
 		
 	}
@@ -164,70 +162,6 @@ public class PurchaseServiceImpl implements IPurchaseService {
 		return save;
 	}
 	
-	
-	public ByteArrayInputStream customerPDFReport1() throws Exception {
-		Purchase purchase = new Purchase();
-		
-		
-	    Document document = new Document();
-	        ByteArrayOutputStream out = new ByteArrayOutputStream();
-	        
-	        try {
-	          
-	          PdfWriter.getInstance(document, out);
-	            document.open();
-	          
-	            // Add Text to PDF file ->
-	          Font font = FontFactory.getFont(FontFactory.COURIER, 14, BaseColor.BLACK);
-	          Paragraph para = new Paragraph( "Céramique Milano", font);
-	          String imageFile = "/Users/soufelhanafi/souf-projects/fl/bachir/ceramic-milano/frontend/src/assets/images/logopdf.jpg"; 
-	          Image image = Image.getInstance(imageFile);
-	          image.setAlignment(Element.ALIGN_CENTER);
-	          image.setDpi(120, 120);
-	          para.setAlignment(Element.ALIGN_CENTER);
-	          // add tel and address
-	          Font font1 = FontFactory.getFont(FontFactory.COURIER, 12, BaseColor.BLACK);
-	          Paragraph tele = new Paragraph( "Tèl : 065555555555", font1);
-	          Paragraph fix = new Paragraph( "Fixe : 065555555555", font1);
-	          Paragraph email = new Paragraph( "Email : email@mail.com", font1);
-	          Paragraph address = new Paragraph( "Adresse : address 123 guercif", font1);
-	          document.add(image);
-	          document.add(para);
-	          document.add(Chunk.NEWLINE);
-	          document.add(Chunk.NEWLINE);
-	          document.add(tele);
-	          document.add(fix);
-	          document.add(email);
-	          document.add(address);
-	          document.add(Chunk.NEWLINE);
-	          // add information about the purchase
-	          Paragraph info = new Paragraph( "Informations de l'achat", font);
-	          
-	          document.add(info);
-	          document.add(Chunk.NEWLINE);
-	          PdfPTable table = new PdfPTable(2);
-	          table.addCell("Nom du Client");
-	          table.addCell("Soufian ELhanafi");
-	          table.addCell("Produit");
-	          table.addCell("Produit");
-	          table.addCell("Quantité");
-	          table.addCell("120");
-	          table.addCell("Total à payer");
-	          table.addCell("1200dhs");
-	          table.addCell("Reste à payer");
-	          table.addCell("120dhs");
-	          table.addCell("Statut");
-	          table.addCell("EN COURS");
-	          document.add(table);
-	          document.close();
-	        }catch(DocumentException e) {
-	          logger.error(e.toString());
-	        }
-	        
-	    return new ByteArrayInputStream(out.toByteArray());
-	  }
-
-
 
 	@Override
 	public Resource customerPDFReport() throws Exception {
@@ -254,13 +188,12 @@ public class PurchaseServiceImpl implements IPurchaseService {
 		  logger.info(html.getAbsolutePath());
 		
 		  new ProcessBuilder()
-		      .command("bash", "-c", "wkhtmltopdf '/var/folders/rp/04qj8khj0pvgkj56cxjc2ty00000gn/T/purchase2940124810411607726.html' "
-		      		+ "'/Users/soufelhanafi/Downloads/newPdf-folder/newPdf.pdf'" ).start().waitFor();
+		      .command("bash", "-c", "/usr/local/bin/wkhtmltopdf "  +html.getAbsolutePath() + " "
+		      		+ pdfPath ).start().waitFor();
 		
-		  return new FileSystemResource("/Users/soufelhanafi/Downloads/newPdf-folder/newPdf.pdf");
+		  return new FileSystemResource(pdfPath);
 	    
 //		return null;
 	}
-	
 
 }
