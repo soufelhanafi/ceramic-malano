@@ -17,11 +17,11 @@ class TopComponent extends React.Component {
     })
   }
 
-  onSearch = (value)=>{
+  onSearch = (e)=>{
     const {size, page, sort, order} = this.props
     this.props.dispatch({
       type: purchaseActions.LOAD_PURCHASES,
-      payload:{size, page, sort, order, search:value}
+      payload:{size, page, sort, order, search:e.target.value}
     })
   }
 
@@ -35,8 +35,7 @@ class TopComponent extends React.Component {
             <Search
               className={styles.searchInput}
               placeholder="Chercher"
-              onSearch={value => this.onSearch(value)}
-              onChange={this.onChange}
+              onChange={value => this.onSearch(value)}
             />
           </Col>
         </Row>
